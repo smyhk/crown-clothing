@@ -4,7 +4,7 @@ export const addItemToCart = (cartItems, cartItemToAdd) => {
     cartItem => cartItem.id === cartItemToAdd.id
   );
 
-  // Return new array with updated quantity of duplicate item found
+  // Return new array with updated quantity if duplicate item found
   if (existingCartItem) {
     return cartItems.map(cartItem =>
       cartItem.id === cartItemToAdd.id
