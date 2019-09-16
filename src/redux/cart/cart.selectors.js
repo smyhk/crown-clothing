@@ -10,6 +10,12 @@ export const selectCartItems = createSelector(
   cart => cart.cartItems
 );
 
+// Toggle hidden cart
+export const selectCartHidden = createSelector(
+  [selectCart],
+  cart => cart.hidden
+);
+
 // Use selectCartItems to reduce the quantities of cart items
 export const selectCartItemsCount = createSelector(
   [selectCartItems],
