@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import Button from '../button/button.component';
 import FormInput from '../form-input/form-input.component';
 
 import {
@@ -97,7 +98,7 @@ const SignUpForm = () => {
           value={confirmPassword}
         />
 
-        <button type="submmit">Sign Up</button>
+        <Button type="submmit">Sign Up</Button>
       </form>
     </div>
   );
