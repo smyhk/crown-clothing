@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 
-// helper function
+// helper functions
 const addCartItem = (cartItems, productToAdd) => {
   // find if cartItems contains producToAdd
   const existingCartItem = cartItems.find(
@@ -39,12 +39,25 @@ const removeCartItem = (cartItems, cartItemToRemove) => {
   );
 };
 
+const clearCartItem = (cartItems, cartItemToClear) => {
+  // find if cartItems contains cartItemToClear
+  const existingCartItem = cartItems.find(
+    cartItem => cartItem.id === cartItemToClear.id
+  );
+
+  // check if cart item exists and remove
+  if (existingCartItem) {
+    return cartItems.filter(cartItem => cartItem.id !== cartItemToClear.id);
+  }
+};
+
 export const CartContext = createContext({
   isCartOpen: false,
   setIsCartOpen: () => {},
   cartItems: [],
   addItemToCart: () => {},
   removeItemFromCart: () => {},
+  clearItemFromCart: () => {},
   cartCount: 0,
 });
 
@@ -69,11 +82,16 @@ export const CartProvider = ({ children }) => {
     setCartItems(removeCartItem(cartItems, cartItemToRemove));
   };
 
+  const clearItemFromCart = cartItemToClear => {
+    setCartItems(clearCartItem(cartItems, cartItemToClear));
+  };
+
   const value = {
     isCartOpen,
     setIsCartOpen,
     addItemToCart,
     removeItemFromCart,
+    clearItemFromCart,
     cartItems,
     cartCount,
   };
