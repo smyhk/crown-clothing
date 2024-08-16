@@ -4,15 +4,15 @@ import { createContext, useState, useEffect } from 'react';
 const addCartItem = (cartItems, productToAdd) => {
   // find if cartItems contains producToAdd
   const existingCartItem = cartItems.find(
-    cartIem => cartIem.id === productToAdd.id
+    cartItem => cartItem.id === productToAdd.id
   );
 
   // if found, increment quantity
   if (existingCartItem) {
-    return cartItems.map(cartIem =>
-      cartIem.id === productToAdd.id
-        ? { ...cartIem, quantity: cartIem.quantity + 1 }
-        : cartIem
+    return cartItems.map(cartItem =>
+      cartItem.id === productToAdd.id
+        ? { ...cartItem, quantity: cartItem.quantity + 1 }
+        : cartItem
     );
   }
 
@@ -23,20 +23,20 @@ const addCartItem = (cartItems, productToAdd) => {
 const removeCartItem = (cartItems, cartItemToRemove) => {
   // find if cartItems contains producToRemove
   const existingCartItem = cartItems.find(
-    cartIem => cartIem.id === productToAdd.id
+    cartItem => cartItem.id === cartItemToRemove.id
   );
 
-  // if found, decrement quantity
-  if (existingCartItem) {
-    return cartItems.map(cartIem =>
-      cartIem.id === cartItemToRemove.id
-        ? { ...cartIem, quantity: cartIem.quantity - 1 }
-        : cartIem
-    );
+  // check if quantity is equal to 1, remove item from cart if so
+  if (existingCartItem.quantity === 1) {
+    return cartItems.filter(cartItem => cartItem.id !== cartItemToRemove.id);
   }
 
-  // return new array with modified cartItems / new cart item
-  return [...cartItems, { ...cartItemToRemove, quantity: 1 }];
+  // decrement quantity
+  return cartItems.map(cartItem =>
+    cartItem.id === cartItemToRemove.id
+      ? { ...cartItem, quantity: cartItem.quantity - 1 }
+      : cartItem
+  );
 };
 
 export const CartContext = createContext({
@@ -73,6 +73,7 @@ export const CartProvider = ({ children }) => {
     isCartOpen,
     setIsCartOpen,
     addItemToCart,
+    removeItemFromCart,
     cartItems,
     cartCount,
   };
