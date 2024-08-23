@@ -1,13 +1,21 @@
 import { createContext, useState, useEffect } from 'react';
 
-import PRODUCTS from '../shop-data.json';
+// import { addCollectionAndDocuments } from '../utils/firebase/firebase.utils.js';
+
+// import SHOP_DATA from '../shop-data.js';
 
 export const ProductsContext = createContext({
   products: [],
 });
 
 export const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState(PRODUCTS);
+  const [products, setProducts] = useState([]);
+
+  // Add categoried and associated data to firesore - only run once!
+  // useEffect(() => {
+  //   addCollectionAndDocuments('categories', SHOP_DATA);
+  // });
+
   const value = { products };
 
   return (

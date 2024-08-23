@@ -9,7 +9,14 @@ import {
   createUserWithEmailAndPassword,
 } from 'firebase/auth';
 
-import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -35,6 +42,26 @@ googleProvider.setCustomParameters({
 // Goole stuff
 export const auth = getAuth();
 export const db = getFirestore();
+
+// Add a collection of documents to firestore in one batch
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd,
+  field = 'title'
+) => {
+  const collectionRef = collection(db, collectionKey);
+
+  // Batch object to execute multriple writes at once
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach(object => {
+    const docRef = doc(collectionRef, object[field].toLowerCase());
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.info('Data write complete.');
+};
 
 // Display google popup
 export const signInWithGooglePopup = () =>
